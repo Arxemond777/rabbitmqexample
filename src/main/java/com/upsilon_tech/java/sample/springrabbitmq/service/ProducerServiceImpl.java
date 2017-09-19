@@ -8,16 +8,13 @@ import com.rabbitmq.client.Channel;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
-/**
- * Created by kenny on 14/04/2017.
- */
 @Service
 public class ProducerServiceImpl implements ProducerService {
 
     /**
      *  The name of the Exchange
      */
-    private static final String EXCHANGE_NAME = "messages";
+    //private static final String EXCHANGE_NAME = "messages1";
 
     /**
      *  This method publishes a message
@@ -25,20 +22,19 @@ public class ProducerServiceImpl implements ProducerService {
      */
     @Override
     public void produceMessage(String message) {
-        try {
-            ConnectionFactory factory = new ConnectionFactory();
-            factory.setHost("localhost");
-            Connection connection = factory.newConnection();
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.setHost("localhost");
+        try (Connection connection = factory.newConnection()) {
             Channel channel = connection.createChannel();
             
-            channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
+            channel.exchangeDeclare(ConsumerServiceImpl.getExchangeName(), "fanout");
 
             
-            channel.basicPublish(EXCHANGE_NAME, "", null, message.getBytes());
+            channel.basicPublish(ConsumerServiceImpl.getExchangeName(), "", null, message.getBytes());
             System.out.println(" [x] Sent '" + message  + "'");
             
             channel.close();
-            connection.close();
+            //connection.close();
         } catch (IOException io) {
             System.out.println("IOException");
             io.printStackTrace();

@@ -5,9 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * Created by kenny on 14/04/2017.
- */
 @Controller
 public class IndexController {
 
@@ -27,6 +24,6 @@ public class IndexController {
     @RequestMapping(value = "/sendMessage", method = RequestMethod.POST)
     public @ResponseBody String sendMessage(@RequestBody String message) {
         producerService.produceMessage(message);
-        return "Message published";
+        return "Message published" + System.getProperty("line.separator");
     }
 }

@@ -1,6 +1,3 @@
-/**
- * Created by kenny on 14/04/2017.
- */
 
 var app = app || {};
 
@@ -14,7 +11,9 @@ $(function () {
             contentType: "application/json",
             data: msg
         }).done(function(data){
-            alert(data);
+            console.log(data);
+            $('#message').val('')
+            //alert(data);
 
         }).fail(function(data){
             alert("Error");
